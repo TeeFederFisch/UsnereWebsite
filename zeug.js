@@ -77,6 +77,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	}
 
+	function FensterWoZi(){
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				Anzeigen(this, "FensterWozi");
+			}
+		 };
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=3148&datapoint_id=3178", true);
+		xmlHttp.send();
+
+		//console.log("WWW " + x[0].getAttribute('value'));
+		setTimeout(FensterWoZi, 1000);
+
+	}
+
 	function FensterKüche(){
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function() {
@@ -291,6 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	FensterMaya();
 	TempMaya();
 	FensterKüche();
+	FensterWoZi();
 	TempKüche();
 	TempWozi();
 	TempTable();
