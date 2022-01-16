@@ -30,27 +30,48 @@ document.addEventListener('DOMContentLoaded', function () {
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				Anzeigen(this, "Fenster");
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "Fenster");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1428", true);
+				xmlHttp2.send();
 			}
 		 };
 		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1449", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
 		xmlHttp.send();
-
+		
 		setTimeout(FensterJungs, 1000);
-
 	}
 
-	function Anzeigen(xml, element) {
+	function Anzeigen(xml, batXml, element) {
 		var dings = document.getElementById(element);
+		
+		var batXmlDoc = batXml.responseXML;
+
+		let y = batXmlDoc.getElementsByTagName("datapoint");
 
 		var xmlDoc = xml.responseXML;
 		var x = xmlDoc.getElementsByTagName('datapoint');
-		if (x[0].getAttribute('value') == "0") {
-			dings.innerHTML = "Fenster geschlossen";
+		if (y[0].getAttribute('value') == 'true') {
+			if (x[0].getAttribute('value') == "0") {
+				dings.innerHTML = 'Fenster geschlossen <i style="color:red;" class="fas fa-battery-quarter"></i>';
+			}
+			else {
+				dings.innerHTML = 'Fenster offen <i style="color:red;" class="fas fa-battery-quarter"></i>';
+			}
 		}
 		else {
-			dings.innerHTML = "Fenster offen";
+			if (x[0].getAttribute('value') == "0") {
+				dings.innerHTML = 'Fenster geschlossen';
+			}
+			else {
+				dings.innerHTML = "Fenster offen";
+			}
 		}
+		
 	}
 
 	function AnzeigenTemp(xml, element) {
@@ -62,47 +83,69 @@ document.addEventListener('DOMContentLoaded', function () {
 		dings.innerHTML = "Temperatur: " + RealTemp + " °C"
 	}
 
+
 	function FensterMaya(){
+
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				Anzeigen(this, "FensterMaya");
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "FensterMaya");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1511&datapoint_id=1520", true);
+				xmlHttp2.send();
 			}
 		 };
-		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1511&datapoint_id=1541", true);
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1511&datapoint_id=1541", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
 		xmlHttp.send();
 
-		//console.log("WWW " + x[0].getAttribute('value'));
 		setTimeout(FensterMaya, 1000);
 
 	}
 
 	function FensterWoZi(){
+
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				Anzeigen(this, "FensterWozi");
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "FensterWozi");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=3148&datapoint_id=3157", true);
+				xmlHttp2.send();
 			}
 		 };
-		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=3148&datapoint_id=3178", true);
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=3148&datapoint_id=3178", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
 		xmlHttp.send();
 
-		//console.log("WWW " + x[0].getAttribute('value'));
 		setTimeout(FensterWoZi, 1000);
 
 	}
 
 	function FensterKüche(){
+
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				Anzeigen(this, "FensterK");
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "FensterWozi");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1269&datapoint_id=1278", true);		//low bat value=true/false
+				xmlHttp2.send();
 			}
 		 };
-		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1269&datapoint_id=1299", true);
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1269&datapoint_id=1299", true);		//opened value=0/1
 		xmlHttp.send();
 
-		//console.log("WWW " + x[0].getAttribute('value'));
 		setTimeout(FensterKüche, 1000);
 
 	}
