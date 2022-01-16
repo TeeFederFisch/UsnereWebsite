@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				var xmlHttp2 = new XMLHttpRequest();
 				xmlHttp2.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						Anzeigen(xmlHttp,xmlHttp2, "FensterWozi");
+						Anzeigen(xmlHttp,xmlHttp2, "FensterK");
 					}
 				}
 				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1269&datapoint_id=1278", true);		//low bat value=true/false
