@@ -67,7 +67,7 @@ for k in kids:
                 continue
             elif l.startswith('Keine Vertretungen'):
                 continue
-            elif int(dt.now().strftime("%H")) >= 12 and day['day'].split(' ')[1] == d.today().strftime('%d.%m.%Y'):
+            elif int(dt.now().strftime("%H")) >= 9 and day['day'].split(' ')[1] == d.today().strftime('%d.%m.%Y'):
                 continue
             else:
                 content.append(l)
