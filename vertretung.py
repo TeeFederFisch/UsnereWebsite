@@ -1,13 +1,15 @@
 import json
 import re
 import time
+from datetime import datetime as dt
+from datetime import date as d
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
 options.headless = True
 
-driver = webdriver.Chrome(executable_path='C:\\bin\chromedriver', options=options)  # Optional argument, if not specified will search path.
+driver = webdriver.Chrome(executable_path='C:\\bin\chromedriver', options=options)  # Optional argument, if not specified will search path. (main error source when trying things out on windows first)
 driver.get('https://freygym.eltern-portal.org/')
 #time.sleep(1) # Let the user actually see something!
 user = driver.find_element_by_id('inputEmail')
@@ -58,13 +60,14 @@ for k in kids:
             day = { 'day': l, 'content': content }
             plan.append(day)
             
-            
             continue
         if len(day) == 0: continue
         else:
             if l.startswith('Std.'):
                 continue
-            if l.startswith('Keine Vertretungen'):
+            elif l.startswith('Keine Vertretungen'):
+                continue
+            elif int(dt.now().strftime("%H")) >= 12 and day['day'].split(' ')[1] == d.today().strftime('%d.%m.%Y'):
                 continue
             else:
                 content.append(l)
