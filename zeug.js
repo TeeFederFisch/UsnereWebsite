@@ -25,26 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	}
 
-	function FensterJungs(){
-		
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var xmlHttp2 = new XMLHttpRequest();
-				xmlHttp2.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						Anzeigen(xmlHttp,xmlHttp2, "Fenster");
-					}
-				}
-				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1428", true);
-				xmlHttp2.send();
-			}
-		 };
-		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1449", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
-		xmlHttp.send();
-		
-		setTimeout(FensterJungs, 1000);
-	}
 
 	function Anzeigen(xml, batXml, element) {
 		var dings = document.getElementById(element);
@@ -74,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		
 	}
 
+
 	function AnzeigenTemp(xml, element) {
 		var dings = document.getElementById(element);
 
@@ -83,6 +64,30 @@ document.addEventListener('DOMContentLoaded', function () {
 		dings.innerHTML = "Temperatur: " + RealTemp + " °C"
 	}
 
+
+
+	function FensterJungs(){
+		
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "Fenster");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1428", true);
+				xmlHttp2.send();
+			}
+		 };
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1449", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
+		xmlHttp.send();
+		
+		setTimeout(FensterJungs, 1000);
+	}
+
+	
 
 	function FensterMaya(){
 
