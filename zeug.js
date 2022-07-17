@@ -25,6 +25,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	}
 
+	function FensterJungs(){
+		
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var xmlHttp2 = new XMLHttpRequest();
+				xmlHttp2.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						Anzeigen(xmlHttp,xmlHttp2, "Fenster");
+					}
+				}
+				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1428", true);
+				xmlHttp2.send();
+			}
+		 };
+		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1449", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
+		xmlHttp.send();
+		
+		setTimeout(FensterJungs, 1000);
+	}
 
 	function Anzeigen(xml, batXml, element) {
 		var dings = document.getElementById(element);
@@ -54,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		
 	}
 
-
 	function AnzeigenTemp(xml, element) {
 		var dings = document.getElementById(element);
 
@@ -64,30 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		dings.innerHTML = "Temperatur: " + RealTemp + " °C"
 	}
 
-
-
-	function FensterJungs(){
-		
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var xmlHttp2 = new XMLHttpRequest();
-				xmlHttp2.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						Anzeigen(xmlHttp,xmlHttp2, "Fenster");
-					}
-				}
-				xmlHttp2.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1428", true);
-				xmlHttp2.send();
-			}
-		 };
-		xmlHttp.open( "GET", "http://ccu3/config/xmlapi/state.cgi?device_id=1419&datapoint_id=1449", true);		//ccu3 Devicelist: http://ccu3/config/xmlapi/devicelist.cgi
-		xmlHttp.send();
-		
-		setTimeout(FensterJungs, 1000);
-	}
-
-	
 
 	function FensterMaya(){
 
@@ -272,61 +267,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				for (let i = 0; i < vari.length; i++) {
 					var counter = 0
-					console.log('got ot another place')
 
-					try {
-						for (let d = 0; d < 2; d++) {
-
-							console.log('got here')
-							var abc = vari[i].plan[d].content
-
-							var dings = document.getElementById(vari[i].name)
-
-							
-							dings.innerHTML = vari[i].klasse + ' (' + (vari[i].plan[0].content.length + vari[i].plan[1].content.length) + ')'
-							console.log('len ' + vari[i].plan[d].content.length + ' ' +  vari[i].name + vari[i].plan[d].day)
-
-							let k = -1
-
-							for (let p = counter; p < 4; p++) {
-								k++
-
-								dings = document.getElementById(vari[i].name + p)
-								dings.innerHTML = vari[i].plan[d].content[k] + ' (' + vari[i].plan[d].day[5] + vari[i].plan[d].day[6] + ')'
-								counter += 1
-							}
-
-							for (let p = 0; p < 4; p++) {
-								dings = document.getElementById(vari[i].name + p)
-								//console.log(dings.textContent)
-								if (dings.textContent.split(' ')[0] == 'undefined') {
-									dings.innerHTML = '---------'
-									counter -= 1
-								}
-								else {
-									//console.log('didnt work')
-								}
-
-							}
-							//console.log('yes')
-						}
-						
-					}
-					catch (e) {
-						if (e instanceof TypeError) {
-							var dings = document.getElementById(vari[i].name)
-							dings.innerHTML = vari[i].klasse + ' (kp)'
-							console.log('no')
-							console.log(e)
-						}
-						else {
-							console.log(e)
-						} 
-						
+					var dings = document.getElementById(vari[i].name)
+					if (dings === null) {
+						continue;
 					}
 
+					while (dings.firstChild) {
+						dings.removeChild(dings.firstChild);
+					}
 
-					
+					addChild(dings, "tt", vari[i].klasse);
+
+					for (let d = 0; d < vari[i].plan.length; d++) {
+						addChild(dings, "dd", vari[i].plan[d].day);
+
+						if (vari[i].plan[d].content.length == 0) {
+							addChild(dings, "tt", "-----");
+						}
+
+						for (let e = 0; e < vari[i].plan[d].content.length; e++) {
+							addChild(dings, "tt", vari[i].plan[d].content[e]);
+						}
+					}
 				}
 
 
@@ -338,6 +301,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		http.send();
 
 		setTimeout(Vertretung, 60000);
+	}
+
+	function addChild(parent, cclass, ccontent) {
+		const para = document.createElement("p");
+		para.setAttribute("class", cclass);
+		para.innerText = ccontent;
+		parent.appendChild(para)
 	}
 
 

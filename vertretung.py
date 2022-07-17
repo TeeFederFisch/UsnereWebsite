@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.options import Options
 options = Options()
 options.headless = True
 
-driver = webdriver.Chrome(executable_path='C:\\bin\chromedriver', options=options)  # Optional argument, if not specified will search path. (main error source when trying things out on windows first)
+driver = webdriver.Chrome(options=options)  # Optional argument, if not specified will search path. (main error source when trying things out on windows first)
 driver.get('https://freygym.eltern-portal.org/')
 #time.sleep(1) # Let the user actually see something!
 user = driver.find_element_by_id('inputEmail')
@@ -70,7 +70,8 @@ for k in kids:
             elif int(dt.now().strftime("%H")) >= 9 and day['day'].split(' ')[1] == d.today().strftime('%d.%m.%Y'):
                 continue
             else:
-                content.append(l)
+                if l not in content:
+                    content.append(l)
         
 
     res = {
